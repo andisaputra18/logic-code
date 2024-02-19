@@ -103,12 +103,6 @@ class PageController extends Controller
         }
     }
 
-    protected function notify($message, $type)
-    {
-        Session::flash('message', $message);
-        Session::flash('alert-class', "alert-$type");
-    }
-
     /**
      * Display the specified resource.
      *
@@ -152,5 +146,11 @@ class PageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function notify($message, $type)
+    {
+        Session::flash('message', $message);
+        Session::flash('alert-class', "alert-$type");
     }
 }

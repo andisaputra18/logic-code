@@ -33,38 +33,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($containers as $item)
-                            @php
-                            $position = "";
-                                switch ($item->position) {
-                                    case 1:
-                                        $position = "Center";
-                                        break;
-                                    case 2:
-                                        $position = "Right";
-                                        break;
-                                    case 3:
-                                        $position = "Left";
-                                        break;
-                                    case 4:
-                                        $position = "Dead";
-                                        break;
-                                    default:
-                                        $position = "Not Valid";
-                                        break;
-                                }
-                            @endphp
+                            @if ($containers->count() > 0)
+                                @foreach ($containers as $item)
+                                    @php
+                                    $position = "";
+                                        switch ($item->position) {
+                                            case 1:
+                                                $position = "Center";
+                                                break;
+                                            case 2:
+                                                $position = "Right";
+                                                break;
+                                            case 3:
+                                                $position = "Left";
+                                                break;
+                                            case 4:
+                                                $position = "Dead";
+                                                break;
+                                            default:
+                                                $position = "Not Valid";
+                                                break;
+                                        }
+                                    @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $item->number }}</td>
+                                            <td>{{ $position }}</td>
+                                        </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $item->number }}</td>
-                                    <td>{{ $position }}</td>
+                                    <td colspan="3" class="text-center">Data not available</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Modal -->
+                <!-- Modal Add -->
                 <div class="modal fade" id="modal-add-container" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -76,15 +82,15 @@
                                 <form action="{{ route('page.store') }}" method="post">
                                     @csrf
                                     <div class="mb-3">
-                                        <label class="form-label">Nomor Kontainer</label>
-                                        <input type="number" name="number" class="form-control" placeholder="Nomor Kontainer dengan 7 numeric" maxlength="7" required>
+                                        <label class="form-label">Container Number</label>
+                                        <input type="number" name="number" class="form-control" placeholder="Container number must have 7 numeric" maxlength="7" required onkeypress="if(this.value.length==7) return false;">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Posisi</label>
+                                        <label class="form-label">Position</label>
                                         <select name="position" class="form-select" required>
-                                            <option value="">Pilih Posisi</option>
+                                            <option value="">Select Position</option>
                                             @php
-                                                $position = [[1, "Tengah"], [2, "Kanan"], [3, "Kiri"], [4, "Reject"]]
+                                                $position = [[1, "Center"], [2, "Right"], [3, "Left"], [4, "Dead"]]
                                             @endphp
                                             @for ($i = 0; $i < count($position); $i++)
                                                 <option value="{{ $position[$i][0] }}">{{ $position[$i][1] }}</option>
